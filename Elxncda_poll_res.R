@@ -10,7 +10,7 @@ elxn_num <-
 
 ####Generate elections canada url####
 
-cr_elxn_lnk <- function(elxn_num){
+cr_elxn_url <- function(elxn_num){
 	ifelse(elxn_num<=41, 
 	       paste0("https://www.elections.ca/content.aspx?section=res&dir=rep/off/",elxn_num,"gedata&document=byed&lang=e"),
 	       paste0("https://www.elections.ca/content.aspx?section=res&dir=rep/off/",elxn_num,"gedata&document=reg&lang=e")
@@ -18,11 +18,11 @@ cr_elxn_lnk <- function(elxn_num){
                           }
 
 ####Generate url for elxn ####
-elxn_url <- cr_elxn_lnk(elxn_num)
+elxn_url <- cr_elxn_url(elxn_num)
 
 
 ###Generate urls for range of elxns#### 
-elxn_url <- lapply(elxn_num, cr_elxn_lnk)
+elxn_url <- lapply(elxn_num, cr_elxn_url)
 
 
 ####Reads riding tables into R to get each unique riding code####
