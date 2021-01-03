@@ -4,7 +4,7 @@ library(rlist)
 library(data.table)
 library(RCurl)
 
-####Enter elxn number####
+####Enter elxn number (38-43 or all 38:43) ####
 
 elxn_num <- 
 
