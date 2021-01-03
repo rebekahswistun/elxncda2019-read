@@ -4,10 +4,6 @@ library(rlist)
 library(data.table)
 library(RCurl)
 
-
-####37 36
-https://www.elections.ca/content.aspx?section=res&dir=rep/off/37p&document=index&lang=e
-
 ####Enter elxn number####
 
 elxn_num <- 
