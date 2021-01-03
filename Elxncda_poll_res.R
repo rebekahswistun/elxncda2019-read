@@ -4,9 +4,34 @@ library(rlist)
 library(data.table)
 library(RCurl)
 
+
+####37 36
+https://www.elections.ca/content.aspx?section=res&dir=rep/off/37p&document=index&lang=e
+
+####Enter elxn number####
+
+elxn_num <- 
+
+####Generate elections canada url####
+
+cr_elxn_lnk <- function(elxn_num){
+	ifelse(elxn_num<=41, 
+	       paste0("https://www.elections.ca/content.aspx?section=res&dir=rep/off/",elxn_num,"gedata&document=byed&lang=e"),
+	       paste0("https://www.elections.ca/content.aspx?section=res&dir=rep/off/",elxn_num,"gedata&document=reg&lang=e")
+	        )               
+                          }
+
+####Generate url for elxn ####
+elxn_url <- cr_elxn_lnk(elxn_num)
+
+
+###Generate urls for range of elxns#### 
+elxn_url <- lapply(elxn_num, cr_elxn_lnk)
+
+
 ####Reads riding tables into R to get each unique riding code####
-get_riding_code <-     function(url){
-	                    webpage <- xml2::read_html(url)
+get_riding_code <-     function(elxn_url){
+	                    webpage <- xml2::read_html(elxn_url)
 	                     riding <- webpage %>%
 	                               rvest::html_nodes("table")%>%
 	                               rvest::html_table()%>%
@@ -14,11 +39,10 @@ get_riding_code <-     function(url){
 	                                
 	                    subset(riding, select = c("Code", "Federal Electoral Districts"))
 	                                  }
- 
-riding_codes <- get_riding_code("https://www.elections.ca/content.aspx?section=res&dir=rep/off/43gedata&document=reg&lang=e")
+####Elxn 38 to 43
+riding_codes <- get_riding_code(elxn_url)
 
-
-
+                         
 ####Uses Elxn Cda riding codes to create unique url for each riding ####
 create_url_elxncda <- function(ridingcode){
 	           paste0("https://www.elections.ca/res/rep/off/ovr2019app/51/data_donnees/pollresults_resultatsbureau",ridingcode ,".csv")
@@ -34,7 +58,7 @@ download_riding_data <- function(unique_url) {
 downloaded_riding_dt <- lapply(created_url, download_riding_data)
 
 
-####Reads the complete CSV file (338 ridings) into R####
+####Reads the complete CSV file (300+ ridings) into R####
 riding_data_csv <- function(file){
 	read.csv(text = file, stringsAsFactors = FALSE)
 }
